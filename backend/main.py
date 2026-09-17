@@ -11,9 +11,20 @@ from ai import analyze_report
 # TESSERACT CONFIGURATION
 # --------------------------------------------------
 
-pytesseract.pytesseract.tesseract_cmd = (
-    r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-)
+import shutil
+import os
+
+if os.name == "nt":
+    pytesseract.pytesseract.tesseract_cmd = (
+        r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    )
+else:
+    tesseract_path = shutil.which("tesseract")
+
+    if not tesseract_path:
+        raise RuntimeError("Tesseract is not installed on this server.")
+
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 
 # --------------------------------------------------
